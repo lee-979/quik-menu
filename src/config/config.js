@@ -23,6 +23,8 @@ const envVarsSchema = Joi.object()
     SMTP_USERNAME: Joi.string().description('username for email server'),
     SMTP_PASSWORD: Joi.string().description('password for email server'),
     EMAIL_FROM: Joi.string().description('the from field in the emails sent by the app'),
+    FLUTTERWAVE_BASE_URL: Joi.string().description("Flutterwave's base url").required(),
+    FLUTTERWAVE_SECRET_KEY: Joi.string().description('the secret key to authenticate flutterwave requests').required(),
   })
   .unknown();
 
@@ -60,5 +62,9 @@ module.exports = {
       },
     },
     from: envVars.EMAIL_FROM,
+  },
+  nuban: {
+    provider_base_url: envVars.FLUTTERWAVE_BASE_URL,
+    authorization_token: envVars.FLUTTERWAVE_SECRET_KEY,
   },
 };
