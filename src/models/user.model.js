@@ -6,7 +6,12 @@ const { roles } = require('../config/roles');
 
 const userSchema = mongoose.Schema(
   {
-    name: {
+    firstname: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    lastname: {
       type: String,
       required: true,
       trim: true,
@@ -22,6 +27,12 @@ const userSchema = mongoose.Schema(
           throw new Error('Invalid email');
         }
       },
+    },
+    username: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
     },
     password: {
       type: String,
@@ -44,6 +55,10 @@ const userSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    hasGeneratedVirtualAccount: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,
@@ -62,6 +77,11 @@ userSchema.plugin(paginate);
  */
 userSchema.statics.isEmailTaken = async function (email, excludeUserId) {
   const user = await this.findOne({ email, _id: { $ne: excludeUserId } });
+  return !!user;
+};
+
+userSchema.statics.isUsernameTaken = async function (username) {
+  const user = await this.findOne({ username });
   return !!user;
 };
 
