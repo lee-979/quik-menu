@@ -8,7 +8,7 @@ const ApiError = require('../utils/ApiError');
  * @param {string} userId - User's object id
  * @returns {Promise<Product>}
  */
-const createProduct = async (name, userId) => {
+const createProduct = async (name, extraFields, userId) => {
   let slug = name.toLowerCase().replaceAll(/\s/g, '_');
 
   if (slug.length > 20) {
@@ -18,7 +18,7 @@ const createProduct = async (name, userId) => {
   if (await Product.isSlugTaken(userId, slug))
     throw new ApiError(httpStatus.CONFLICT, 'A product with a similar name exist, please choose a different name');
 
-  return Product.create({ name, slug, user: userId });
+  return Product.create({ name, slug, user: userId, extraFields });
 };
 
 module.exports = {

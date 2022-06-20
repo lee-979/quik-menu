@@ -12,7 +12,6 @@ const productSchema = mongoose.Schema(
       type: mongoose.SchemaTypes.ObjectId,
       ref: 'user',
       required: true,
-      unique: true, // only one product per user for now
     },
     slug: {
       type: String,
